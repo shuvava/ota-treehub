@@ -47,7 +47,12 @@ func (l LogrusLogger) WithError(err error) Logger {
 
 // WithContext adds a context to the Entry.
 func (l LogrusLogger) WithContext(ctx context.Context) Logger {
-	return LogrusLogger{entry: l.entry.WithContext(ctx)}
+	corrID := GetRequestID(ctx)
+	log := l.entry.WithContext(ctx)
+	if corrID != "" {
+		log = log.WithField(ContextKeyRequestID, corrID)
+	}
+	return LogrusLogger{entry: log}
 }
 
 // Trace creates logs entry with Trace level
@@ -115,7 +120,7 @@ func (l LogrusLogger) GetLevel() Level {
 // }
 func (l LogrusLogger) TrackFuncTime(start time.Time) {
 	lvl := l.GetLevel()
-	if lvl != DebugLevel && lvl != TraceLevel {
+	if lvl > DebugLevel {
 		return
 	}
 	elapsed := time.Since(start)
@@ -171,6 +176,6 @@ func ParseLogrusLevel(lvl logrus.Level) Level {
 	case logrus.TraceLevel:
 		return TraceLevel
 	}
-
-	return UnknownLevel
+	// Default value
+	return InfoLevel
 }

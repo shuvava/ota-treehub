@@ -1,0 +1,8 @@
+Port: 8080
+LogLevel: "debug"
+DB:
+  Type: "mongodb"
+  ConnectionString: "mongodb://mongoadmin:secret@localhost:27017/db?authSource=admin"
+Storage:
+  Type: "localfs"
+  Root: "/tmp/treehub"

@@ -2,22 +2,34 @@ package logger
 
 import (
 	"context"
+	"strings"
 	"time"
+
+	"github.com/shuvava/treehub/internal/apperrors"
 )
 
 // Level is logger severity level
 type Level uint32
 
 const (
+	// PanicLevel level, highest level of severity
 	PanicLevel Level = iota
+	// FatalLevel level. Logs and then calls `logger.Exit(1)`.
 	FatalLevel
+	// ErrorLevel level.
 	ErrorLevel
+	// WarnLevel level.
 	WarnLevel
+	// InfoLevel level.
 	InfoLevel
+	// DebugLevel level.
 	DebugLevel
+	// TraceLevel level.
 	TraceLevel
-	UnknownLevel
 )
+
+// ContextKeyRequestID is correlationId key for context
+const ContextKeyRequestID = "correlationId"
 
 // Fields type, used to pass to `WithFields`.
 type Fields map[string]interface{}
@@ -69,6 +81,47 @@ func ParseLevel(lvl Level) string {
 	case TraceLevel:
 		return "trace"
 	}
+	// default value
+	return "info"
+}
 
-	return "unknown"
+// ToLogLevel converts string to log Level
+func ToLogLevel(s string) Level {
+	lvl := strings.ToLower(s)
+	switch lvl {
+	case "panic":
+		return PanicLevel
+	case "fatal":
+		return FatalLevel
+	case "error":
+		return ErrorLevel
+	case "warn":
+		return WarnLevel
+	case "info":
+		return InfoLevel
+	case "debug":
+		return DebugLevel
+	case "trace":
+		return TraceLevel
+	}
+
+	return InfoLevel
+}
+
+// GetRequestID will get reqID from a http request and return it as a string
+func GetRequestID(ctx context.Context) string {
+	reqID := ctx.Value(ContextKeyRequestID)
+
+	if ret, ok := reqID.(string); ok {
+		return ret
+	}
+
+	return ""
+}
+
+// CreateErrorAndLogIt create log record and throw an error
+func CreateErrorAndLogIt(log Logger, code apperrors.AppErrorCode, descr string, err error) error {
+	log.WithError(err).
+		Error(descr)
+	return apperrors.CreateError(code, descr, err)
 }
