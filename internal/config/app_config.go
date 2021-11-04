@@ -40,6 +40,7 @@ type AppConfig struct {
 	Storage StorageConfig `mapstructure:"storage"`
 }
 
+// OnConfigChange callback for config changes
 type OnConfigChange func(*AppConfig)
 
 //NewConfig loads new config of run panic on error
@@ -99,4 +100,14 @@ func NewConfig(logger logger.Logger, fn OnConfigChange) *AppConfig {
 	}
 
 	return &cfg
+}
+
+// PrintConfig returns print current config into log output
+func (cfg *AppConfig) PrintConfig(log logger.Logger) {
+	log.Info("Current config:")
+	log.Info("    Port         :", cfg.Port)
+	log.Info("    LogLevel     :", cfg.LogLevel)
+	log.Info("    Db.Type      :", cfg.Db.Type)
+	log.Info("    Storage.Type :", cfg.Storage.Type)
+	log.Info("    Storage.Root :", cfg.Storage.Root)
 }

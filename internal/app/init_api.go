@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	//routeApiVer2 = "/api/v2"
+	routeApiVer2 = "/api/v2"
 	routeApiVer3 = "/api/v3"
 )
 
@@ -34,9 +34,14 @@ func (s *Server) initWebServer() {
 	e.Use(api.ServerHeader)
 
 	initHealthRoutes(s, e)
+	v2Group := e.Group(routeApiVer2, middleware.RequestID())
+	initObjectRoutes(s, v2Group)
+	initRefsRoutes(s, v2Group)
+	initConfRoutes(v2Group)
 	v3Group := e.Group(routeApiVer3, middleware.RequestID())
 	initObjectRoutes(s, v3Group)
 	initRefsRoutes(s, v3Group)
+	initConfRoutes(v3Group)
 
 	// Enable metrics middleware
 	p := prometheus.NewPrometheus("echo", nil)
@@ -88,5 +93,11 @@ func initRefsRoutes(s *Server, group *echo.Group) {
 	})
 	group.GET(api.PathRefs, func(c echo.Context) error {
 		return api.RefDownload(c, s.svc.Refs)
+	})
+}
+
+func initConfRoutes(group *echo.Group) {
+	group.GET(api.PathConfig, func(c echo.Context) error {
+		return api.ConfigDownload(c)
 	})
 }

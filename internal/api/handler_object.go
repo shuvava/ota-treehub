@@ -67,7 +67,7 @@ func ObjectUpload(ctx echo.Context, svc *services.ObjectService) error {
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, NewErrorResponse(c, http.StatusInternalServerError, err))
 	}
-	return ctx.NoContent(http.StatusOK)
+	return ctx.NoContent(http.StatusNoContent)
 }
 
 // ObjectDownload is endpoint download data.Object file from server to client

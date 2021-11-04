@@ -40,7 +40,7 @@ type Server struct {
 // NewServer creates new Server instance
 func NewServer(logger logger.Logger) *Server {
 	s := &Server{
-		log: logger.SetContext("internal-http"),
+		log: logger,
 	}
 
 	s.initWebServer()
@@ -58,11 +58,13 @@ func (s *Server) initConfig() {
 // OnConfigChange execute operation required on config change
 func (s *Server) OnConfigChange(newCfg *config.AppConfig) {
 	s.mu.Lock()
+	defer func() { s.mu.Unlock() }()
 	lvl := logger.ToLogLevel(newCfg.LogLevel)
 	_ = s.log.SetLevel(lvl)
 	s.config = newCfg
 	s.initServices()
-	s.mu.Unlock()
+
+	s.config.PrintConfig(s.log)
 }
 
 // Start starts web server main event loop
