@@ -7,6 +7,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo-contrib v0.11.0
 	github.com/labstack/echo/v4 v4.6.1
+	github.com/shuvava/go-logging v1.0.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
 	go.mongodb.org/mongo-driver v1.7.3
@@ -43,7 +44,6 @@ require (
 	github.com/prometheus/common v0.25.0 // indirect
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
-	github.com/shuvava/go-logging v1.0.0 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/cobra v0.0.5 // indirect

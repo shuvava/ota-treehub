@@ -25,7 +25,9 @@ REGISTRY ?= mrshuvava
 #VERSION ?= $(shell git describe --tags --always --dirty)
 #
 # This version-strategy uses a manual value to set the version string
-VERSION ?= 0.0.6
+VERSION ?= 0.0.7
+
+COMMIT_HASH ?= $(shell git rev-parse --short HEAD)
 
 # Which Go modules mode to use ("mod" or "vendor")
 MOD ?= mod
@@ -40,7 +42,7 @@ ARCH := $(if $(GOARCH),$(GOARCH),$(shell go env GOARCH))
 
 BASEIMAGE ?= gcr.io/distroless/static
 
-TAG := $(VERSION)__$(OS)_$(ARCH)
+TAG := $(OS)-$(ARCH)v$(VERSION)
 
 BUILD_IMAGE ?= golang:1.17-alpine
 
@@ -52,11 +54,9 @@ endif
 # It's necessary to set this because some environments don't link sh -> bash.
 SHELL := /usr/bin/env bash
 
-# If you want to build all binaries, see the 'all-build' rule.
-# If you want to build all containers, see the 'all-container' rule.
-# If you want to build AND push all containers, see the 'all-push' rule.
-all: # @HELP builds binaries for one platform ($OS/$ARCH)
-all: build
+
+all: # @HELP default target
+all: help
 
 # For the following OS/ARCH expansions, we transform OS/ARCH into OS_ARCH
 # because make pattern rules don't match with embedded '/' characters.
@@ -151,6 +151,7 @@ go-build: | $(BUILD_DIRS)
 	        ARCH=$(ARCH)                                        \
 	        OS=$(OS)                                            \
 	        VERSION=$(VERSION)                                  \
+	        COMMIT_HASH=$(COMMIT_HASH)                          \
 	        MOD=$(MOD)                                          \
 	        ./scripts/build.sh ./...                            \
 	    "

@@ -30,6 +30,10 @@ if [ -z "${VERSION:-}" ]; then
     echo "VERSION must be set"
     exit 1
 fi
+if [ -z "${COMMIT_HASH:-}" ]; then
+    echo "COMMIT_HASH must be set"
+    exit 1
+fi
 
 export CGO_ENABLED=0
 export GOARCH="${ARCH}"
@@ -37,7 +41,11 @@ export GOOS="${OS}"
 export GO111MODULE=on
 export GOFLAGS="${GOFLAGS:-} -mod=${MOD}"
 
+PACKAGE="$(go list -m)/pkg/version"
+BUILD_TIMESTAMP=$(date '+%Y-%m-%dT%H:%M:%S')
+
+
 go install                                                      \
     -installsuffix "static"                                     \
-    -ldflags "-X $(go list -m)/pkg/version.Version=${VERSION}"  \
+    -ldflags "-X '${PACKAGE}.Version=${VERSION}' -X '${PACKAGE}.CommitHash=${COMMIT_HASH}' -X '${PACKAGE}.BuildDate=${BUILD_TIMESTAMP}'"  \
     "$@"
