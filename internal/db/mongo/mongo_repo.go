@@ -6,17 +6,15 @@ import (
 	"time"
 
 	"github.com/shuvava/treehub/internal/apperrors"
-
 	"github.com/shuvava/treehub/internal/db"
 
+	"github.com/shuvava/go-logging/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"go.mongodb.org/mongo-driver/x/mongo/driver/connstring"
-
-	"github.com/shuvava/treehub/internal/logger"
 )
 
 const defaultMongoTimeout = 5 * time.Second
@@ -74,7 +72,7 @@ func NewMongoDB(ctx context.Context, lgr logger.Logger, connectString string) (*
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(connectString))
 	if err != nil {
-		return nil, logger.CreateErrorAndLogIt(log,
+		return nil, apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbConnection,
 			"Creating NewClient failed", err)
 	}
@@ -82,7 +80,7 @@ func NewMongoDB(ctx context.Context, lgr logger.Logger, connectString string) (*
 	ctxConnect, cancel := context.WithTimeout(ctx, defaultMongoTimeout)
 	defer cancel()
 	if err = client.Connect(ctxConnect); err != nil {
-		return nil, logger.CreateErrorAndLogIt(log,
+		return nil, apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbConnection,
 			"Database connect failed", err)
 	}
@@ -102,7 +100,7 @@ func (db *Db) Disconnect(ctx context.Context) error {
 	ctxDisc, cancel := context.WithTimeout(ctx, db.Timeout)
 	defer cancel()
 	if err := db.client.Disconnect(ctxDisc); err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Disconnect from DB failed", err)
 	}
@@ -138,7 +136,7 @@ func (db *Db) InsertOne(ctx context.Context, coll *mongo.Collection, document in
 	// Attempt to persist a new document
 	res, err := coll.InsertOne(ctxIns, document)
 	if err != nil {
-		return "", logger.CreateErrorAndLogIt(log,
+		return "", apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to add new DB record", err)
 	}
@@ -157,7 +155,7 @@ func (db *Db) Count(ctx context.Context, coll *mongo.Collection, filter interfac
 
 	cnt, err := coll.CountDocuments(ctxCnt, filter)
 	if err != nil {
-		return 0, logger.CreateErrorAndLogIt(log,
+		return 0, apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to get count of DB records", err)
 	}
@@ -187,7 +185,7 @@ func (db *Db) GetOne(ctx context.Context, coll *mongo.Collection, filter interfa
 		return apperrors.NewAppError(apperrors.ErrorDbNoDocumentFound, "document not found")
 	}
 	// Otherwise, return the provided error
-	return logger.CreateErrorAndLogIt(log,
+	return apperrors.CreateErrorAndLogIt(log,
 		apperrors.ErrorDbOperation,
 		"Failed to get count of DB records", err)
 }
@@ -197,7 +195,7 @@ func (db *Db) GetOneByID(ctx context.Context, coll *mongo.Collection, id string,
 	log := db.log.WithContext(ctx)
 	oid, err := parseObjectID(id)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Invalid object ID", err)
 	}
@@ -219,7 +217,7 @@ func (db *Db) Delete(ctx context.Context, coll *mongo.Collection, filter interfa
 	// Try to delete asset from database
 	result, err := coll.DeleteMany(ctxDel, filter)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed no delete record from DB", err)
 	}
@@ -240,7 +238,7 @@ func (db *Db) DeleteByID(ctx context.Context, coll *mongo.Collection, id string)
 	log := db.log.WithContext(ctx)
 	oid, err := parseObjectID(id)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Invalid object ID", err)
 	}
@@ -265,7 +263,7 @@ func (db *Db) Find(ctx context.Context, coll *mongo.Collection, filter interface
 	opt := options.Find().SetProjection(projection)
 	cur, err := coll.Find(ctxFind, filter, opt)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to find DB records", err)
 	}
@@ -274,7 +272,7 @@ func (db *Db) Find(ctx context.Context, coll *mongo.Collection, filter interface
 	defer cancelCur()
 	err = cur.All(ctxCur, docs)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to fetch DB records", err)
 	}
@@ -292,7 +290,7 @@ func (db *Db) ReplaceOne(ctx context.Context, coll *mongo.Collection, filter int
 
 	res, err := coll.ReplaceOne(ctxUpd, filter, document)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to replace DB record", err)
 	}
@@ -315,14 +313,14 @@ func (db *Db) Aggregate(ctx context.Context, coll *mongo.Collection, pipe interf
 
 	data, err := coll.Aggregate(ctxAgg, pipe)
 	if err != nil {
-		return nil, logger.CreateErrorAndLogIt(log,
+		return nil, apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to run DB query", err)
 	}
 	var res []DBResult
 	err = data.All(ctxAgg, &res)
 	if err != nil {
-		return nil, logger.CreateErrorAndLogIt(log,
+		return nil, apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"failed to decode results", err)
 	}
@@ -340,7 +338,7 @@ func (db *Db) UpdateOne(ctx context.Context, coll *mongo.Collection, filter inte
 
 	res, err := coll.UpdateOne(ctxUpd, filter, update)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbOperation,
 			"Failed to update DB record", err)
 	}

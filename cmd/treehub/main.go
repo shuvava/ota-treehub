@@ -3,11 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/shuvava/treehub/pkg/version"
+	"github.com/shuvava/go-logging/logger"
 	"github.com/sirupsen/logrus"
 
+	"github.com/shuvava/treehub/pkg/version"
+
 	"github.com/shuvava/treehub/internal/app"
-	"github.com/shuvava/treehub/internal/logger"
 )
 
 func main() {

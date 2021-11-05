@@ -7,9 +7,8 @@ import (
 	"github.com/shuvava/treehub/internal/utils/fshelper"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/shuvava/go-logging/logger"
 	"github.com/spf13/viper"
-
-	"github.com/shuvava/treehub/internal/logger"
 )
 
 const (

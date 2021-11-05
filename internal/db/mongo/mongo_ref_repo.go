@@ -5,13 +5,13 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/shuvava/go-logging/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/shuvava/treehub/internal/apperrors"
 	"github.com/shuvava/treehub/internal/db"
-	"github.com/shuvava/treehub/internal/logger"
 
 	"github.com/shuvava/treehub/pkg/data"
 )
@@ -57,7 +57,7 @@ func (store *RefMongoRepository) Create(ctx context.Context, ref data.Ref) error
 	}
 	if exists {
 		err = fmt.Errorf("document (Ref) with Name='%s' namespace='%s' already exist in database", ref.Name, ref.Namespace)
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbAlreadyExist,
 			"Failed to add new DB record", err)
 	}

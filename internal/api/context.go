@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/shuvava/treehub/internal/logger"
+	"github.com/shuvava/go-logging/logger"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shuvava/treehub/pkg/data"
 )
 
 const (
+	// DefaultNamespaceValue is default treeHup namespace
 	DefaultNamespaceValue = "default"
 
 	headerNamespace = "x-ats-namespace"

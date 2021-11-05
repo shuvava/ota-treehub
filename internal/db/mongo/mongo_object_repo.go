@@ -5,17 +5,14 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/shuvava/treehub/internal/db"
-
 	"github.com/shuvava/treehub/internal/apperrors"
+	"github.com/shuvava/treehub/internal/db"
+	"github.com/shuvava/treehub/pkg/data"
 
+	"github.com/shuvava/go-logging/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-
-	"github.com/shuvava/treehub/internal/logger"
-
-	"github.com/shuvava/treehub/pkg/data"
 )
 
 const objectTableName = "objects"
@@ -59,7 +56,7 @@ func (store *ObjectMongoRepository) Create(ctx context.Context, obj data.Object)
 	}
 	if exists {
 		err = fmt.Errorf("document(Object) with id='%s' namespace='%s' already exist in database", obj.ID, obj.Namespace)
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDbAlreadyExist,
 			"Failed to add new DB record", err)
 	}

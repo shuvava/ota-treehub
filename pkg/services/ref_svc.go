@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/shuvava/treehub/internal/apperrors"
+	"github.com/shuvava/go-logging/logger"
 
+	"github.com/shuvava/treehub/internal/apperrors"
 	"github.com/shuvava/treehub/internal/db"
-	"github.com/shuvava/treehub/internal/logger"
 	"github.com/shuvava/treehub/pkg/data"
 )
 
@@ -31,7 +31,7 @@ func (svc *RefService) StoreRef(ctx context.Context, ns data.Namespace, name dat
 	log := svc.log.WithContext(ctx)
 	ref, err := data.NewRef(ns, name, commit)
 	if err != nil {
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorDataRefValidation,
 			"Ref is invalid", err)
 	}
@@ -41,7 +41,7 @@ func (svc *RefService) StoreRef(ctx context.Context, ns data.Namespace, name dat
 	}
 	if exists && !force {
 		err = fmt.Errorf("ref already exists")
-		return logger.CreateErrorAndLogIt(log,
+		return apperrors.CreateErrorAndLogIt(log,
 			apperrors.ErrorSvcEntityExists,
 			"Ref already exists and force push header not set", err)
 	}

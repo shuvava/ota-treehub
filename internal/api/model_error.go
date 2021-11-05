@@ -6,10 +6,10 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/shuvava/go-logging/logger"
 
 	"github.com/shuvava/treehub/internal/apperrors"
 	"github.com/shuvava/treehub/internal/data"
-	"github.com/shuvava/treehub/internal/logger"
 )
 
 // ErrorResponse is http error response model
@@ -28,10 +28,10 @@ type ErrorResponse struct {
 
 // NewErrorResponse creates new error response from error
 func NewErrorResponse(ctx context.Context, statusCode int, err error) ErrorResponse {
-	requestId := logger.GetRequestID(ctx)
+	requestID := logger.GetRequestID(ctx)
 	resp := ErrorResponse{
 		StatusCode: statusCode,
-		RequestID:  requestId,
+		RequestID:  requestID,
 	}
 
 	var typedErr apperrors.AppError

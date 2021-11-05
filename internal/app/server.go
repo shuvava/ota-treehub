@@ -8,17 +8,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/shuvava/treehub/pkg/services"
-
 	"github.com/shuvava/treehub/internal/blobs"
-
-	"github.com/sirupsen/logrus"
-
-	"github.com/labstack/echo/v4"
-
 	"github.com/shuvava/treehub/internal/config"
 	intDb "github.com/shuvava/treehub/internal/db"
-	"github.com/shuvava/treehub/internal/logger"
+	"github.com/shuvava/treehub/pkg/services"
+
+	"github.com/labstack/echo/v4"
+	"github.com/shuvava/go-logging/logger"
+	"github.com/sirupsen/logrus"
 )
 
 // Server is main application servers

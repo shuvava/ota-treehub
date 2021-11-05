@@ -4,9 +4,10 @@ import (
 	"context"
 	"io"
 
+	"github.com/shuvava/go-logging/logger"
+
 	objstore "github.com/shuvava/treehub/internal/blobs"
 	"github.com/shuvava/treehub/internal/db"
-	"github.com/shuvava/treehub/internal/logger"
 	"github.com/shuvava/treehub/pkg/data"
 )
 
