@@ -4,9 +4,8 @@ package data
 type ObjectStatus int
 
 const (
-	// UPLOADED means data.Object was successfully uploaded to server
-	UPLOADED ObjectStatus = iota
-	// CLIENT_UPLOADING means data.Object was created, but content not fully uploaded to the server
-	CLIENT_UPLOADING
-	SERVER_UPLOADING
+	// Uploaded means data.Object was successfully uploaded to server
+	Uploaded ObjectStatus = iota
+	// ServerUploading means data.Object was created, but content not fully uploaded to the server
+	ServerUploading
 )

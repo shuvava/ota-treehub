@@ -19,12 +19,14 @@ const (
 func ObjectExists(ctx echo.Context, svc *services.ObjectService) error {
 	c := GetRequestContext(ctx)
 	ns := GetNamespace(ctx)
-	id, err := GetObjectId(ctx)
+	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, NewErrorResponse(c, http.StatusBadRequest, err))
 	}
-	var exists bool
-	exists, err = svc.Exists(c, ns, id)
+	exists, err := svc.Exists(c, ns, id)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, NewErrorResponse(c, http.StatusInternalServerError, err))
+	}
 	if exists {
 		return ctx.NoContent(http.StatusOK)
 	}
@@ -35,7 +37,7 @@ func ObjectExists(ctx echo.Context, svc *services.ObjectService) error {
 func ObjectUploadCompleted(ctx echo.Context, svc *services.ObjectService) error {
 	c := GetRequestContext(ctx)
 	ns := GetNamespace(ctx)
-	id, err := GetObjectId(ctx)
+	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, NewErrorResponse(c, http.StatusBadRequest, err))
 	}
@@ -50,7 +52,7 @@ func ObjectUploadCompleted(ctx echo.Context, svc *services.ObjectService) error 
 func ObjectUpload(ctx echo.Context, svc *services.ObjectService) error {
 	c := GetRequestContext(ctx)
 	ns := GetNamespace(ctx)
-	id, err := GetObjectId(ctx)
+	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, NewErrorResponse(c, http.StatusBadRequest, err))
 	}
@@ -74,7 +76,7 @@ func ObjectUpload(ctx echo.Context, svc *services.ObjectService) error {
 func ObjectDownload(ctx echo.Context, svc *services.ObjectService) error {
 	c := GetRequestContext(ctx)
 	ns := GetNamespace(ctx)
-	id, err := GetObjectId(ctx)
+	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, NewErrorResponse(c, http.StatusBadRequest, err))
 	}

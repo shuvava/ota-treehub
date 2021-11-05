@@ -33,11 +33,12 @@ func (delta DeltaID) Validate() error {
 	return nil
 }
 
-// UrlSafe converts DeltaID string to url safe encoding
-func (delta DeltaID) UrlSafe() string {
+// URLSafe converts DeltaID string to url safe encoding
+func (delta DeltaID) URLSafe() string {
 	return strings.ReplaceAll(string(delta), "+", "_")
 }
 
+// ToObjectID transforms DeltaID to ObjectID
 func (delta DeltaID) ToObjectID() (ObjectID, error) {
 	parts := strings.Split(string(delta), "-")
 	if len(parts) != 2 {

@@ -22,10 +22,10 @@ ALL_PLATFORMS := linux/amd64 #linux/arm linux/arm64 linux/ppc64le linux/s390x wi
 REGISTRY ?= mrshuvava
 
 # This version-strategy uses git tags to set the version string
-#VERSION ?= $(shell git describe --tags --always --dirty)
+VERSION ?= $(shell git describe --tags --always --abbrev=0 --match='v[0-9]*.[0-9]*.[0-9]*' 2> /dev/null | sed 's/^.//')
 #
 # This version-strategy uses a manual value to set the version string
-VERSION ?= 0.0.7
+# VERSION ?= 0.0.7
 
 COMMIT_HASH ?= $(shell git rev-parse --short HEAD)
 
@@ -269,6 +269,23 @@ test: | $(BUILD_DIRS)
 $(BUILD_DIRS):
 	@mkdir -p $@
 
+lint : # @HELP Run all available linters
+lint: lint-go lint-dockerfile
+
+lint-dockerfile: # @HELP Lint your Dockerfile
+# If dockerfile is present we lint it.
+ifeq ($(shell test -e ./Dockerfile && echo -n yes),yes)
+	$(eval CONFIG_OPTION = $(shell [ -e $(shell pwd)/.hadolint.yaml ] && echo "-v $(shell pwd)/.hadolint.yaml:/root/.config/hadolint.yaml" || echo "" ))
+	$(eval OUTPUT_OPTIONS = $(shell [ "${EXPORT_RESULT}" == "true" ] && echo "--format checkstyle" || echo "" ))
+	$(eval OUTPUT_FILE = $(shell [ "${EXPORT_RESULT}" == "true" ] && echo "| tee /dev/tty > checkstyle-report.xml" || echo "" ))
+	docker run --rm -i $(CONFIG_OPTION) hadolint/hadolint hadolint $(OUTPUT_OPTIONS) - < ./Dockerfile $(OUTPUT_FILE)
+endif
+
+lint-go: # @HELP Use golintci-lint on your project
+	$(eval OUTPUT_OPTIONS = $(shell [ "${EXPORT_RESULT}" == "true" ] && echo "--out-format checkstyle ./... | tee /dev/tty > checkstyle-report.xml" || echo "" ))
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:latest-alpine golangci-lint run --deadline=165s $(OUTPUT_OPTIONS)
+
+
 clean: # @HELP removes built binaries and temporary files
 clean: container-clean bin-clean
 
@@ -287,6 +304,7 @@ help:
 	@echo "  ARCH = $(ARCH)"
 	@echo "  MOD = $(MOD)"
 	@echo "  REGISTRY = $(REGISTRY)"
+	@echo "  VERSION = $(VERSION)"
 	@echo
 	@echo "TARGETS:"
 	@grep -E '^.*: *# *@HELP' $(MAKEFILE_LIST)    \

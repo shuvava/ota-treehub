@@ -9,6 +9,7 @@ func (c CorrelationID) String() string {
 	return uuid.UUID(c).String()
 }
 
+// NewCorrelationID creates a new CorrelationID
 func NewCorrelationID() CorrelationID {
 	id := uuid.New()
 	return CorrelationID(id)

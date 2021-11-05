@@ -10,14 +10,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/shuvava/treehub/internal/apperrors"
-
+	"github.com/shuvava/go-logging/logger"
 	"github.com/sirupsen/logrus"
 
-	"github.com/shuvava/treehub/pkg/data"
-
+	"github.com/shuvava/treehub/internal/apperrors"
 	intdata "github.com/shuvava/treehub/internal/data"
-	"github.com/shuvava/treehub/internal/logger"
+	"github.com/shuvava/treehub/pkg/data"
 )
 
 const useNopLogger = false

@@ -20,15 +20,6 @@ func ValidHex(length int, str string) bool {
 	return true
 }
 
-func mbase64(str string) (string, error) {
-	data, err := base64.StdEncoding.DecodeString(str)
-	if err != nil {
-		return "", err
-	}
-	s := base64.StdEncoding.EncodeToString(data)
-	return strings.ReplaceAll(strings.ReplaceAll(s, "/", "_"), "=", ""), nil
-}
-
 // ToBase64 convert byte slice to base64 encoded byte slice
 func ToBase64(val string) ([]byte, error) {
 	s := strings.ReplaceAll(strings.ReplaceAll(val, "/", ""), "_", "/")

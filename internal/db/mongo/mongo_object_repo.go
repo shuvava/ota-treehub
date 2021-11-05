@@ -167,7 +167,7 @@ func (store *ObjectMongoRepository) Exists(ctx context.Context, ns data.Namespac
 	return cnt > 0, nil
 }
 
-// SetCompleted change data.Object status to data.UPLOADED
+// SetCompleted change data.Object status to data.Uploaded
 func (store *ObjectMongoRepository) SetCompleted(ctx context.Context, ns data.Namespace, id data.ObjectID) error {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
@@ -177,12 +177,12 @@ func (store *ObjectMongoRepository) SetCompleted(ctx context.Context, ns data.Na
 		Key: "$and", Value: bson.A{
 			bson.D{primitive.E{Key: "id", Value: id}},
 			bson.D{primitive.E{Key: "namespace", Value: ns}},
-			bson.D{primitive.E{Key: "status", Value: int(data.CLIENT_UPLOADING)}},
+			bson.D{primitive.E{Key: "status", Value: int(data.ServerUploading)}},
 		},
 	}}
 	upd := bson.D{primitive.E{
 		Key: "$set", Value: bson.M{
-			"status": int(data.UPLOADED),
+			"status": int(data.Uploaded),
 		},
 	}}
 	err := store.db.UpdateOne(ctx, store.coll, filter, upd)
@@ -205,7 +205,7 @@ func (store *ObjectMongoRepository) SetCompleted(ctx context.Context, ns data.Na
 	return nil
 }
 
-// IsUploaded checks if data.Object was data.UPLOADED
+// IsUploaded checks if data.Object was data.Uploaded
 func (store *ObjectMongoRepository) IsUploaded(ctx context.Context, ns data.Namespace, id data.ObjectID) (bool, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
@@ -216,7 +216,7 @@ func (store *ObjectMongoRepository) IsUploaded(ctx context.Context, ns data.Name
 		Value: bson.A{
 			bson.D{primitive.E{Key: "id", Value: id}},
 			bson.D{primitive.E{Key: "namespace", Value: ns}},
-			bson.D{primitive.E{Key: "status", Value: int(data.UPLOADED)}},
+			bson.D{primitive.E{Key: "status", Value: int(data.Uploaded)}},
 		},
 	}}
 	cnt, err := store.db.Count(ctx, store.coll, filter)

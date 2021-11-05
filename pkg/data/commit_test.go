@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/shuvava/treehub/data"
+	"github.com/shuvava/treehub/pkg/data"
 )
 
 func TestCommitValidate(t *testing.T) {

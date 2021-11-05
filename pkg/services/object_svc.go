@@ -28,7 +28,7 @@ func NewObjectService(l logger.Logger, db db.ObjectRepository, fs objstore.Objec
 	}
 }
 
-// SetCompleted change data.Object status to data.UPLOADED
+// SetCompleted change data.Object status to data.Uploaded
 func (svc *ObjectService) SetCompleted(ctx context.Context, ns data.Namespace, id data.ObjectID) error {
 	return svc.db.SetCompleted(ctx, ns, id)
 }
@@ -53,7 +53,7 @@ func (svc *ObjectService) StoreStream(ctx context.Context, ns data.Namespace, id
 		Namespace: ns,
 		ID:        id,
 		ByteSize:  size,
-		Status:    data.SERVER_UPLOADING,
+		Status:    data.ServerUploading,
 	}
 	exists, err := svc.db.Exists(ctx, ns, id)
 	if err != nil {
@@ -74,7 +74,7 @@ func (svc *ObjectService) StoreStream(ctx context.Context, ns data.Namespace, id
 			WithField("Namespace", ns).
 			Warn("Uploaded size(", written, ") does not match expected(", size, ")")
 	}
-	if err = svc.db.Update(ctx, ns, id, written, data.UPLOADED); err != nil {
+	if err = svc.db.Update(ctx, ns, id, written, data.Uploaded); err != nil {
 		_ = svc.db.Delete(ctx, ns, id) // skip error, because of was logged on repo level
 		return err
 	}

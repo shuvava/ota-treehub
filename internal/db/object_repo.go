@@ -18,9 +18,9 @@ type ObjectRepository interface {
 	Delete(ctx context.Context, ns data.Namespace, id data.ObjectID) error
 	// Exists checks if data.Object exists in database
 	Exists(ctx context.Context, ns data.Namespace, id data.ObjectID) (bool, error)
-	// SetCompleted change data.Object status to data.UPLOADED
+	// SetCompleted change data.Object status to data.Uploaded
 	SetCompleted(ctx context.Context, ns data.Namespace, id data.ObjectID) error
-	// IsUploaded checks if data.Object was data.UPLOADED
+	// IsUploaded checks if data.Object was data.Uploaded
 	IsUploaded(ctx context.Context, ns data.Namespace, id data.ObjectID) (bool, error)
 	// FindAllByStatus returns all object with specific status
 	FindAllByStatus(ctx context.Context, status data.ObjectStatus) ([]data.Object, error)

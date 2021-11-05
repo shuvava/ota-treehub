@@ -1,2 +1,2 @@
-// Package objstore is implementation of OSTree object resistance functionality
+// Package blobs is implementation of OSTree object resistance functionality
 package blobs

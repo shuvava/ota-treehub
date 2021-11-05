@@ -31,8 +31,8 @@ func GetNamespace(ctx echo.Context) data.Namespace {
 	return data.NewNamespace(ns)
 }
 
-// GetObjectId builds data.ObjectID from request path
-func GetObjectId(ctx echo.Context) (data.ObjectID, error) {
+// GetObjectID builds data.ObjectID from request path
+func GetObjectID(ctx echo.Context) (data.ObjectID, error) {
 	oprefix := ctx.Param(pathOPrefix)
 	osuffix := ctx.Param(pathOSuffix)
 	return data.NewObjectID(oprefix + osuffix)

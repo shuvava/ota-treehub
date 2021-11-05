@@ -11,6 +11,7 @@ type Ref struct {
 	ObjectID  ObjectID
 }
 
+// Validate doing validation of Ref
 func (ref Ref) Validate() error {
 	if err := ref.Value.Validate(); err != nil {
 		return err
@@ -23,7 +24,7 @@ func (ref Ref) Validate() error {
 
 // NewRef create new instance of Ref
 func NewRef(ns Namespace, refName RefName, value Commit) (Ref, error) {
-	objId, err := value.From()
+	objID, err := value.From()
 	if err != nil {
 		return Ref{}, err
 	}
@@ -31,7 +32,7 @@ func NewRef(ns Namespace, refName RefName, value Commit) (Ref, error) {
 		Namespace: ns,
 		Name:      refName,
 		Value:     value,
-		ObjectID:  objId,
+		ObjectID:  objID,
 	}
 	return ref, ref.Validate()
 }
