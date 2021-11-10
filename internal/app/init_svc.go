@@ -6,11 +6,11 @@ import (
 
 	"github.com/shuvava/treehub/internal/blobs"
 	"github.com/shuvava/treehub/internal/blobs/localfs"
+	intDb "github.com/shuvava/treehub/internal/db/mongo"
 	"github.com/shuvava/treehub/pkg/services"
 
-	"github.com/shuvava/treehub/internal/db"
-
-	intDb "github.com/shuvava/treehub/internal/db/mongo"
+	"github.com/shuvava/go-ota-svc-common/db"
+	intCmnDb "github.com/shuvava/go-ota-svc-common/db/mongo"
 )
 
 func (s *Server) initDbService() {
@@ -23,7 +23,7 @@ func (s *Server) initDbService() {
 	}
 	switch db.Type(strings.ToLower(s.config.Db.Type)) {
 	case db.MongoDb:
-		mongoDB, err := intDb.NewMongoDB(context.Background(), s.log, s.config.Db.ConnectionString)
+		mongoDB, err := intCmnDb.NewMongoDB(context.Background(), s.log, s.config.Db.ConnectionString)
 		if err != nil {
 			log.WithError(err).
 				Fatal("Error on Db service creating")

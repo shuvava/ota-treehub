@@ -7,7 +7,7 @@ import (
 
 	"github.com/shuvava/treehub/internal/data"
 
-	"github.com/shuvava/treehub/internal/apperrors"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
 )
 
 // ObjectID is OSTree object identifier

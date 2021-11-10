@@ -12,9 +12,11 @@ linters:
   enable:
     - errcheck
     - goimports
-    - golint
     - govet
     - staticcheck
+    - ineffassign
+    - gosimple
+    - gofmt
 
 issues:
   exclude-use-default: false

@@ -1,6 +1,6 @@
 package data
 
-import "github.com/shuvava/treehub/internal/data"
+import "github.com/shuvava/go-ota-svc-common/data"
 
 // Namespace is object namespace
 type Namespace string

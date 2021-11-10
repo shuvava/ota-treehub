@@ -5,11 +5,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/shuvava/treehub/internal/apperrors"
 	"github.com/shuvava/treehub/internal/db"
 	"github.com/shuvava/treehub/pkg/data"
 
 	"github.com/shuvava/go-logging/logger"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
+	intMongo "github.com/shuvava/go-ota-svc-common/db/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -27,14 +28,14 @@ type objectDTO struct {
 
 // ObjectMongoRepository implementations of db.ObjectRepository for MongoDb repo
 type ObjectMongoRepository struct {
-	db   *Db
+	db   *intMongo.Db
 	coll *mongo.Collection
 	log  logger.Logger
 	db.ObjectRepository
 }
 
 // NewObjectMongoRepository creates new instance of ObjectMongoRepository
-func NewObjectMongoRepository(logger logger.Logger, db *Db) *ObjectMongoRepository {
+func NewObjectMongoRepository(logger logger.Logger, db *intMongo.Db) *ObjectMongoRepository {
 	log := logger.SetContext("ObjectRepo")
 	return &ObjectMongoRepository{
 		db:   db,

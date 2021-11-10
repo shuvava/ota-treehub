@@ -6,7 +6,7 @@ import (
 
 	"github.com/shuvava/go-logging/logger"
 
-	"github.com/shuvava/treehub/internal/apperrors"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
 	"github.com/shuvava/treehub/internal/db"
 	"github.com/shuvava/treehub/pkg/data"
 )

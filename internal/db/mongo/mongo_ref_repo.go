@@ -6,13 +6,13 @@ import (
 	"fmt"
 
 	"github.com/shuvava/go-logging/logger"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
+	intMongo "github.com/shuvava/go-ota-svc-common/db/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/shuvava/treehub/internal/apperrors"
 	"github.com/shuvava/treehub/internal/db"
-
 	"github.com/shuvava/treehub/pkg/data"
 )
 
@@ -28,14 +28,14 @@ type refDTO struct {
 
 // RefMongoRepository implementations of db.RefRepository for MongoDb repo
 type RefMongoRepository struct {
-	db   *Db
+	db   *intMongo.Db
 	coll *mongo.Collection
 	log  logger.Logger
 	db.RefRepository
 }
 
 // NewRefMongoRepository creates new instance of RefMongoRepository
-func NewRefMongoRepository(logger logger.Logger, db *Db) *RefMongoRepository {
+func NewRefMongoRepository(logger logger.Logger, db *intMongo.Db) *RefMongoRepository {
 	log := logger.SetContext("RefRepo")
 	return &RefMongoRepository{
 		db:   db,

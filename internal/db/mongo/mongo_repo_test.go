@@ -8,8 +8,8 @@ import (
 	"github.com/shuvava/go-logging/logger"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/shuvava/treehub/internal/apperrors"
-	"github.com/shuvava/treehub/internal/db/mongo"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
+	"github.com/shuvava/go-ota-svc-common/db/mongo"
 )
 
 func TestMongoDB(t *testing.T) {

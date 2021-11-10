@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	intCmnDb "github.com/shuvava/go-ota-svc-common/db"
 	"github.com/shuvava/treehub/internal/blobs"
 	"github.com/shuvava/treehub/internal/config"
 	intDb "github.com/shuvava/treehub/internal/db"
@@ -18,14 +19,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Server is main application servers
+// Server is main applica
+//tion servers
 type Server struct {
 	Echo   *echo.Echo
 	log    logger.Logger
 	config *config.AppConfig
 	mu     sync.Mutex
 	svc    struct {
-		Db          intDb.BaseRepository
+		Db          intCmnDb.BaseRepository
 		ObjectRepo  intDb.ObjectRepository
 		RefRepo     intDb.RefRepository
 		ObjectStore blobs.ObjectStore

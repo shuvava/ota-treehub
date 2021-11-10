@@ -7,9 +7,8 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/shuvava/go-logging/logger"
-
-	"github.com/shuvava/treehub/internal/apperrors"
-	"github.com/shuvava/treehub/internal/data"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
+	"github.com/shuvava/go-ota-svc-common/data"
 )
 
 // ErrorResponse is http error response model

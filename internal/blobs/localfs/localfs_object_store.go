@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/shuvava/go-logging/logger"
+	"github.com/shuvava/go-ota-svc-common/apperrors"
 
-	"github.com/shuvava/treehub/internal/apperrors"
 	"github.com/shuvava/treehub/internal/blobs"
 	"github.com/shuvava/treehub/internal/utils/fshelper"
 
