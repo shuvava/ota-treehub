@@ -7,7 +7,7 @@ require (
 	github.com/labstack/echo-contrib v0.11.0
 	github.com/labstack/echo/v4 v4.6.1
 	github.com/shuvava/go-logging v1.0.2
-	github.com/shuvava/go-ota-svc-common v1.0.1
+	github.com/shuvava/go-ota-svc-common v1.0.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
 	go.mongodb.org/mongo-driver v1.7.4

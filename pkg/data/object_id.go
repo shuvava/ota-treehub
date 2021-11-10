@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/shuvava/treehub/internal/data"
+	"github.com/shuvava/go-ota-svc-common/data"
 
 	"github.com/shuvava/go-ota-svc-common/apperrors"
 )

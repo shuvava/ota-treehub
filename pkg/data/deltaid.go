@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/shuvava/treehub/internal/data"
+	"github.com/shuvava/go-ota-svc-common/data"
 )
 
 // DeltaID is OSTree delta
