@@ -44,7 +44,7 @@ type OnConfigChange func(*AppConfig)
 
 //NewConfig loads new config of run panic on error
 func NewConfig(logger logger.Logger, fn OnConfigChange) *AppConfig {
-	log := logger.SetContext("config-initialization")
+	log := logger.SetOperation("config-initialization")
 	var cfg AppConfig
 	if fn != nil {
 		viper.OnConfigChange(func(e fsnotify.Event) {

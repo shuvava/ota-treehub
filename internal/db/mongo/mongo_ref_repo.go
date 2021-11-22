@@ -36,7 +36,7 @@ type RefMongoRepository struct {
 
 // NewRefMongoRepository creates new instance of RefMongoRepository
 func NewRefMongoRepository(logger logger.Logger, db *intMongo.Db) *RefMongoRepository {
-	log := logger.SetContext("RefRepo")
+	log := logger.SetOperation("RefRepo")
 	return &RefMongoRepository{
 		db:   db,
 		coll: db.GetCollection(refTableName),

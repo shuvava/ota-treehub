@@ -14,7 +14,7 @@ import (
 )
 
 func (s *Server) initDbService() {
-	log := s.log.SetContext("server-init-db")
+	log := s.log.SetOperation("server-init-db")
 	if s.svc.Db != nil {
 		if err := s.svc.Db.Disconnect(context.Background()); err != nil {
 			log.WithError(err).
@@ -38,7 +38,7 @@ func (s *Server) initDbService() {
 }
 
 func (s *Server) initStorage() {
-	log := s.log.SetContext("server-init-storage")
+	log := s.log.SetOperation("server-init-storage")
 	if s.svc.ObjectStore != nil {
 		log.Warn("Blob storage subsystem reloading")
 	}

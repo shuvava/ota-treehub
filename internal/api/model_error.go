@@ -5,10 +5,12 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/shuvava/treehub/pkg/data"
+	"github.com/shuvava/treehub/pkg/services"
+
 	"github.com/labstack/echo/v4"
 	"github.com/shuvava/go-logging/logger"
 	"github.com/shuvava/go-ota-svc-common/apperrors"
-	"github.com/shuvava/go-ota-svc-common/data"
 )
 
 // ErrorResponse is http error response model
@@ -21,8 +23,6 @@ type ErrorResponse struct {
 	Description string `json:"description"`
 	// RequestID HTTP requestID go from header of request
 	RequestID string `json:"request_id"`
-	// ErrorID unique ID of error required for easier look error in application logs
-	ErrorID string `json:"error_id"`
 }
 
 // NewErrorResponse creates new error response from error
@@ -37,11 +37,9 @@ func NewErrorResponse(ctx context.Context, statusCode int, err error) ErrorRespo
 	if errors.As(err, &typedErr) {
 		resp.ErrorCode = string(typedErr.ErrorCode)
 		resp.Description = typedErr.Description
-		resp.ErrorID = typedErr.ErrorID.String()
 	} else {
 		resp.ErrorCode = apperrors.ErrorGeneric
 		resp.Description = err.Error()
-		resp.ErrorID = data.NewCorrelationID().String()
 	}
 
 	return resp
@@ -55,7 +53,7 @@ func EchoResponse(ctx echo.Context, err error) error {
 		return ctx.JSON(http.StatusInternalServerError, NewErrorResponse(c, http.StatusInternalServerError, err))
 	}
 	switch typedErr.ErrorCode {
-	case apperrors.ErrorDataRefValidation, apperrors.ErrorDataObjectIDSerialization:
+	case apperrors.ErrorDataValidation, apperrors.ErrorDataSerialization, data.ErrorDataSerializationObjectID, services.ErrorDataValidationRef:
 		return ctx.JSON(http.StatusBadRequest, NewErrorResponse(c, http.StatusBadRequest, err))
 	default:
 		return ctx.JSON(http.StatusInternalServerError, NewErrorResponse(c, http.StatusInternalServerError, err))

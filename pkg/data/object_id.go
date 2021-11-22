@@ -13,10 +13,13 @@ import (
 // ObjectID is OSTree object identifier
 type ObjectID string
 
+// ErrorDataSerializationObjectID is error of data.ObjectID serialization
+const ErrorDataSerializationObjectID = apperrors.ErrorDataSerialization + ":ObjectID"
+
 //Validate if ObjectId has valid format
 func (objectId ObjectID) Validate() error {
 	err := apperrors.NewAppError(
-		apperrors.ErrorDataObjectIDSerialization,
+		ErrorDataSerializationObjectID,
 		fmt.Sprintf("%s must be in format <sha256>.objectType", objectId))
 	parts := strings.Split(string(objectId), ".")
 	if len(parts) != 2 {

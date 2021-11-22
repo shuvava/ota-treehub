@@ -471,8 +471,14 @@ github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
 github.com/shuvava/go-logging v1.0.2 h1:DpPAG4e/grkdMH+YCg3tSqtOGwymDpBEEUgYuhBf4qE=
 github.com/shuvava/go-logging v1.0.2/go.mod h1:4ReA5wGShDtIh+BDwKA0La1/Cpz3btVkQZF+RisGafw=
+github.com/shuvava/go-logging v1.0.4 h1:ufDmjFRUi77ZM4jr2WhwW5fI7pax7leVCepjfs7a5nk=
+github.com/shuvava/go-logging v1.0.4/go.mod h1:4ReA5wGShDtIh+BDwKA0La1/Cpz3btVkQZF+RisGafw=
 github.com/shuvava/go-ota-svc-common v1.0.2 h1:C30MkCzQjnmbHd7H+Zccz5nqqlXaAqCzAcPgN39OuuU=
 github.com/shuvava/go-ota-svc-common v1.0.2/go.mod h1:4qOHrG4rUEis6LJ7HLtqeSJWLaVvxUITv2mxip31U4Y=
+github.com/shuvava/go-ota-svc-common v1.0.3 h1:cvpOF3E+lAp4K0D2UtEEsv4zrPjZfhP3SBaUCL2UAek=
+github.com/shuvava/go-ota-svc-common v1.0.3/go.mod h1:4qOHrG4rUEis6LJ7HLtqeSJWLaVvxUITv2mxip31U4Y=
+github.com/shuvava/go-ota-svc-common v1.0.5 h1:lRkAHoQcP5G2XnEzhDpD3vJ9y+fL83K8V7pCIywRDAY=
+github.com/shuvava/go-ota-svc-common v1.0.5/go.mod h1:Qx94ibr1HNGMWXTbWk/qIlY/l6dIdyx/LAEZJMZxs0o=
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.4.1/go.mod h1:ni0Sbl8bgC9z8RoU9G6nDWqqs/fq4eDPysMBDgk/93Q=

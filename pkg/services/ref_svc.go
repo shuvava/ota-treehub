@@ -17,9 +17,12 @@ type RefService struct {
 	db  db.RefRepository
 }
 
+// ErrorDataValidationRef is error for validation of data.Ref
+const ErrorDataValidationRef = apperrors.ErrorDataValidation + ":Ref"
+
 // NewRefService creates new instance of ObjectService
 func NewRefService(l logger.Logger, db db.RefRepository) *RefService {
-	log := l.SetContext("ref-service")
+	log := l.SetOperation("ref-service")
 	return &RefService{
 		log: log,
 		db:  db,
@@ -32,7 +35,7 @@ func (svc *RefService) StoreRef(ctx context.Context, ns data.Namespace, name dat
 	ref, err := data.NewRef(ns, name, commit)
 	if err != nil {
 		return apperrors.CreateErrorAndLogIt(log,
-			apperrors.ErrorDataRefValidation,
+			ErrorDataValidationRef,
 			"Ref is invalid", err)
 	}
 	exists, err := svc.db.Exists(ctx, ref.Namespace, ref.Name)

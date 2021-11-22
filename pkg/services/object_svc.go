@@ -20,7 +20,7 @@ type ObjectService struct {
 
 // NewObjectService creates new instance of ObjectService
 func NewObjectService(l logger.Logger, db db.ObjectRepository, fs objstore.ObjectStore) *ObjectService {
-	log := l.SetContext("object-service")
+	log := l.SetOperation("object-service")
 	return &ObjectService{
 		log: log,
 		db:  db,

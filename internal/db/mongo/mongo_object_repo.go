@@ -36,7 +36,7 @@ type ObjectMongoRepository struct {
 
 // NewObjectMongoRepository creates new instance of ObjectMongoRepository
 func NewObjectMongoRepository(logger logger.Logger, db *intMongo.Db) *ObjectMongoRepository {
-	log := logger.SetContext("ObjectRepo")
+	log := logger.SetOperation("ObjectRepo")
 	return &ObjectMongoRepository{
 		db:   db,
 		coll: db.GetCollection(objectTableName),
