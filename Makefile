@@ -282,13 +282,19 @@ ifeq ($(shell test -e ./Dockerfile && echo -n yes),yes)
 endif
 
 lint-go: # @HELP Use golintci-lint on your project
-	@docker run            				 \
-	    -i                               \
-	    --rm                             \
-	--rm                  				 \
-	-v $(shell pwd):/app  				 \
-	-w /app               				 \
-	golangci/golangci-lint:latest-alpine \
+	@docker run            				 			 	    \
+	-i                                   			 	    \
+	--rm                  				 			 	    \
+	-u $$(id -u):$$(id -g)               			 	    \
+    -v $$(pwd):/app  				     			 	    \
+	-w /app               				 			 	    \
+	-v $$(pwd)/.go/bin/$(OS)_$(ARCH):/go/bin                \
+	-v $$(pwd)/.go/bin/$(OS)_$(ARCH):/go/bin/$(OS)_$(ARCH)  \
+	-v $$(pwd)/.go/cache:/.cache                            \
+	-v $$(pwd)/.go/pkg:/go/pkg                              \
+	--env HTTP_PROXY=$(HTTP_PROXY)                          \
+	--env HTTPS_PROXY=$(HTTPS_PROXY)                        \
+	golangci/golangci-lint:latest-alpine 			 	    \
 	golangci-lint run --deadline=165s
 
 
