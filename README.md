@@ -3,7 +3,7 @@
 
 [![GoDoc](https://godoc.org/github.com/shuvava/ota-treehub?status.svg)](http://godoc.org/github.com/shuvava/ota-treehub)
 [![Build Status](https://travis-ci.com/shuvava/ota-treehub.svg?branch=master)](https://travis-ci.com/github/shuvava/ota-treehub)
-[![Coverage Status](https://coveralls.io/repos/github/shuvava/ota-treehub/badge.svg?branch=master)](https://coveralls.io/github/shuvava/ota-treehub?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/shuvava/treehub/badge.svg?branch=master)](https://coveralls.io/github/shuvava/treehub?branch=master)
 
 
 Treehub implements an `ostree` repository storage for over the air updates. This project is migration of [ota-community-edition/treehub][1] to golang.
