@@ -282,6 +282,7 @@ ifeq ($(shell test -e ./Dockerfile && echo -n yes),yes)
 endif
 
 lint-go: # @HELP Use golintci-lint on your project
+lint-go: | $(BUILD_DIRS)
 	@docker run            				 			 	    \
 	-i                                   			 	    \
 	--rm                  				 			 	    \
