@@ -23,7 +23,7 @@ export GO111MODULE=on
 export GOFLAGS="${GOFLAGS:-} -mod=${MOD}"
 
 echo "Running tests:"
-go test -installsuffix "static" "$@"
+go test -installsuffix "static" -v -covermode=count -coverprofile=coverage.out "$@"
 echo
 
 echo -n "Checking go vet: "

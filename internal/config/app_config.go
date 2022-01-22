@@ -42,7 +42,7 @@ type AppConfig struct {
 // OnConfigChange callback for config changes
 type OnConfigChange func(*AppConfig)
 
-//NewConfig loads new config of run panic on error
+//NewConfig loads new config or run panic on error
 func NewConfig(logger logger.Logger, fn OnConfigChange) *AppConfig {
 	log := logger.SetOperation("config-initialization")
 	var cfg AppConfig

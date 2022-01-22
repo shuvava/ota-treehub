@@ -19,8 +19,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// Server is main applica
-//tion servers
+// Server is main application servers
 type Server struct {
 	Echo   *echo.Echo
 	log    logger.Logger
