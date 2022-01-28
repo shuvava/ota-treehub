@@ -1,11 +1,10 @@
 package api
 
 import (
-	"context"
 	"fmt"
 	"strconv"
 
-	"github.com/shuvava/go-logging/logger"
+	cmnapi "github.com/shuvava/go-ota-svc-common/api"
 
 	"github.com/labstack/echo/v4"
 	"github.com/shuvava/treehub/pkg/data"
@@ -38,35 +37,9 @@ func GetObjectID(ctx echo.Context) (data.ObjectID, error) {
 	return data.NewObjectID(oprefix + osuffix)
 }
 
-// GetContentSize returns Content length from request header
-func GetContentSize(ctx echo.Context) int64 {
-	s := ctx.Request().Header.Get(echo.HeaderContentLength)
-	if s == "" {
-		return 0
-	}
-	size, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return 0
-	}
-	return size
-}
-
-// GetRequestContext return populated request context.Context
-func GetRequestContext(ctx echo.Context) context.Context {
-	c := ctx.Request().Context()
-	rid := ctx.Response().Header().Get(echo.HeaderXRequestID)
-	return context.
-		WithValue(c, logger.ContextKeyRequestID, rid)
-}
-
-// GetContentType returns value of ContentType header
-func GetContentType(ctx echo.Context) string {
-	return ctx.Request().Header.Get(echo.HeaderContentType)
-}
-
 // ValidateUploadContentType that Request has valid ContentType
 func ValidateUploadContentType(ctx echo.Context) error {
-	mime := GetContentType(ctx)
+	mime := cmnapi.GetContentType(ctx)
 	if mime != echo.MIMEOctetStream {
 		return fmt.Errorf("header %s mast be '%s' type", echo.HeaderContentType, echo.MIMEOctetStream)
 	}

@@ -3,12 +3,14 @@ package app
 import (
 	"context"
 
+	"github.com/labstack/echo-contrib/prometheus"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	"github.com/labstack/echo-contrib/prometheus"
+	cmnapi "github.com/shuvava/go-ota-svc-common/api"
 
 	"github.com/shuvava/treehub/internal/api"
+	"github.com/shuvava/treehub/pkg/version"
 )
 
 const (
@@ -23,7 +25,7 @@ func (s *Server) initWebServer() {
 
 	e.HideBanner = true
 	e.HidePort = true
-	e.HTTPErrorHandler = api.NewErrorHandler().Handler
+	e.HTTPErrorHandler = cmnapi.NewErrorHandler().Handler
 	e.Pre(middleware.RemoveTrailingSlash())
 	// logger Middleware (https://echo.labstack.com/middleware/logger/)
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
@@ -31,7 +33,7 @@ func (s *Server) initWebServer() {
 	}))
 	e.Use(middleware.Gzip())
 	// Server header
-	e.Use(api.ServerHeader)
+	e.Use(cmnapi.ServerHeader(version.AppName, version.Version))
 
 	initHealthRoutes(s, e)
 	v2Group := e.Group(routeAPIVer2, middleware.RequestID())
@@ -53,19 +55,19 @@ func (s *Server) initWebServer() {
 func initHealthRoutes(s *Server, e *echo.Echo) {
 	// Define a separate root 'health' group without the logging middleware added (for healthz/readyz)
 	healthGroup := e.Group("")
-	healthGroup.GET(api.LivenessPath, api.HealthzHandler)
-	healthGroup.GET(api.ReadinessPath, api.ReadyzHandler(
-		func(ctx context.Context) api.HealthEntryStatus {
+	healthGroup.GET(cmnapi.LivenessPath, cmnapi.HealthzHandler)
+	healthGroup.GET(cmnapi.ReadinessPath, cmnapi.ReadyzHandler(
+		func(ctx context.Context) cmnapi.HealthEntryStatus {
 			resource := "repository"
 			if err := s.svc.Db.Ping(ctx); err != nil {
-				return api.HealthEntryStatus{
-					Status:   api.StatusUnhealthy,
+				return cmnapi.HealthEntryStatus{
+					Status:   cmnapi.StatusUnhealthy,
 					Data:     err.Error(),
 					Resource: resource,
 				}
 			}
-			return api.HealthEntryStatus{
-				Status:   api.StatusHealthy,
+			return cmnapi.HealthEntryStatus{
+				Status:   cmnapi.StatusHealthy,
 				Resource: resource,
 			}
 		},

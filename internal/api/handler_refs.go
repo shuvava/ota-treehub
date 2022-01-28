@@ -9,10 +9,11 @@ import (
 	"strings"
 
 	"github.com/shuvava/treehub/pkg/data"
+	"github.com/shuvava/treehub/pkg/services"
 
 	"github.com/labstack/echo/v4"
 
-	"github.com/shuvava/treehub/pkg/services"
+	cmnapi "github.com/shuvava/go-ota-svc-common/api"
 )
 
 const (
@@ -22,13 +23,13 @@ const (
 
 // RefsUpload is endpoint uploading refs file to server from client
 func RefsUpload(ctx echo.Context, svc *services.RefService) error {
-	c := GetRequestContext(ctx)
+	c := cmnapi.GetRequestContext(ctx)
 	ns := GetNamespace(ctx)
 	refName := getRefNameFromPath(ctx)
 	force := IsForcePush(ctx)
 	commit, err := getCommitFromBody(ctx)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, NewErrorResponse(c, http.StatusBadRequest, err))
+		return ctx.JSON(http.StatusBadRequest, cmnapi.NewErrorResponse(c, http.StatusBadRequest, err))
 	}
 
 	err = svc.StoreRef(c, ns, refName, commit, force)
@@ -40,20 +41,20 @@ func RefsUpload(ctx echo.Context, svc *services.RefService) error {
 
 // RefDownload is endpoint download data.Ref file from server to client
 func RefDownload(ctx echo.Context, svc *services.RefService) error {
-	c := GetRequestContext(ctx)
+	c := cmnapi.GetRequestContext(ctx)
 	ns := GetNamespace(ctx)
 	refName := getRefNameFromPath(ctx)
 	exists, err := svc.Exists(c, ns, refName)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, NewErrorResponse(c, http.StatusInternalServerError, err))
+		return ctx.JSON(http.StatusInternalServerError, cmnapi.NewErrorResponse(c, http.StatusInternalServerError, err))
 	}
 	if !exists {
 		err = fmt.Errorf("ref with namespace='%s' name='%s' does not exist", string(ns), refName)
-		return ctx.JSON(http.StatusNotFound, NewErrorResponse(c, http.StatusNotFound, err))
+		return ctx.JSON(http.StatusNotFound, cmnapi.NewErrorResponse(c, http.StatusNotFound, err))
 	}
 	ref, err := svc.GetRef(c, ns, refName)
 	if err != nil {
-		return ctx.JSON(http.StatusInternalServerError, NewErrorResponse(c, http.StatusInternalServerError, err))
+		return ctx.JSON(http.StatusInternalServerError, cmnapi.NewErrorResponse(c, http.StatusInternalServerError, err))
 	}
 	return ctx.Blob(http.StatusOK, echo.MIMEOctetStream, []byte(ref.Value))
 }
