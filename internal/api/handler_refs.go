@@ -24,7 +24,7 @@ const (
 // RefsUpload is endpoint uploading refs file to server from client
 func RefsUpload(ctx echo.Context, svc *services.RefService) error {
 	c := cmnapi.GetRequestContext(ctx)
-	ns := GetNamespace(ctx)
+	ns := cmnapi.GetNamespace(ctx)
 	refName := getRefNameFromPath(ctx)
 	force := IsForcePush(ctx)
 	commit, err := getCommitFromBody(ctx)
@@ -42,7 +42,7 @@ func RefsUpload(ctx echo.Context, svc *services.RefService) error {
 // RefDownload is endpoint download data.Ref file from server to client
 func RefDownload(ctx echo.Context, svc *services.RefService) error {
 	c := cmnapi.GetRequestContext(ctx)
-	ns := GetNamespace(ctx)
+	ns := cmnapi.GetNamespace(ctx)
 	refName := getRefNameFromPath(ctx)
 	exists, err := svc.Exists(c, ns, refName)
 	if err != nil {

@@ -1,11 +1,15 @@
 package data
 
+import (
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
+)
+
 // RefName is name of OSTree Ref
 type RefName string
 
 // Ref is OSTree object reference
 type Ref struct {
-	Namespace Namespace
+	Namespace cmndata.Namespace
 	Name      RefName
 	Value     Commit
 	ObjectID  ObjectID
@@ -23,7 +27,7 @@ func (ref Ref) Validate() error {
 }
 
 // NewRef create new instance of Ref
-func NewRef(ns Namespace, refName RefName, value Commit) (Ref, error) {
+func NewRef(ns cmndata.Namespace, refName RefName, value Commit) (Ref, error) {
 	objID, err := value.From()
 	if err != nil {
 		return Ref{}, err

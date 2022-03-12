@@ -7,6 +7,7 @@ import (
 
 	"github.com/shuvava/go-logging/logger"
 	"github.com/shuvava/go-ota-svc-common/apperrors"
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
 	intMongo "github.com/shuvava/go-ota-svc-common/db/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -75,7 +76,7 @@ func (store *RefMongoRepository) Create(ctx context.Context, ref data.Ref) error
 }
 
 // Find looking up data.Ref in database
-func (store *RefMongoRepository) Find(ctx context.Context, ns data.Namespace, name data.RefName) (*data.Ref, error) {
+func (store *RefMongoRepository) Find(ctx context.Context, ns cmndata.Namespace, name data.RefName) (*data.Ref, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("Name", name).
 		WithField("Namespace", ns).
@@ -133,7 +134,7 @@ func (store *RefMongoRepository) Update(ctx context.Context, ref data.Ref) error
 }
 
 // Delete removes data.Ref from mongo database
-func (store *RefMongoRepository) Delete(ctx context.Context, ns data.Namespace, name data.RefName) error {
+func (store *RefMongoRepository) Delete(ctx context.Context, ns cmndata.Namespace, name data.RefName) error {
 	log := store.log.WithContext(ctx)
 	log.WithField("Name", name).
 		WithField("Namespace", ns).
@@ -153,7 +154,7 @@ func (store *RefMongoRepository) Delete(ctx context.Context, ns data.Namespace, 
 }
 
 // Exists checks if data.Object exists in mongo database
-func (store *RefMongoRepository) Exists(ctx context.Context, ns data.Namespace, name data.RefName) (bool, error) {
+func (store *RefMongoRepository) Exists(ctx context.Context, ns cmndata.Namespace, name data.RefName) (bool, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("Name", name).
 		WithField("Namespace", ns).
@@ -181,7 +182,7 @@ func refToDTO(obj data.Ref) refDTO {
 // refDtoToModel converts refDTO to data.Ref
 func refDtoToModel(dto refDTO) data.Ref {
 	model := data.Ref{
-		Namespace: data.Namespace(dto.Namespace),
+		Namespace: cmndata.Namespace(dto.Namespace),
 		Name:      data.RefName(dto.Name),
 		Value:     data.Commit(dto.Value),
 		ObjectID:  data.ObjectID(dto.ObjectID),
@@ -189,7 +190,7 @@ func refDtoToModel(dto refDTO) data.Ref {
 	return model
 }
 
-func getOneRefFilter(ns data.Namespace, name data.RefName) bson.D {
+func getOneRefFilter(ns cmndata.Namespace, name data.RefName) bson.D {
 	return bson.D{primitive.E{
 		Key: "$and",
 		Value: bson.A{

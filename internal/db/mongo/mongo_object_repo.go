@@ -10,6 +10,7 @@ import (
 
 	"github.com/shuvava/go-logging/logger"
 	"github.com/shuvava/go-ota-svc-common/apperrors"
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
 	intMongo "github.com/shuvava/go-ota-svc-common/db/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -77,7 +78,7 @@ func (store *ObjectMongoRepository) Create(ctx context.Context, obj data.Object)
 }
 
 // Find looking up data.Object in database
-func (store *ObjectMongoRepository) Find(ctx context.Context, ns data.Namespace, id data.ObjectID) (*data.Object, error) {
+func (store *ObjectMongoRepository) Find(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) (*data.Object, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
 		WithField("Namespace", ns).
@@ -102,7 +103,7 @@ func (store *ObjectMongoRepository) Find(ctx context.Context, ns data.Namespace,
 }
 
 // Update change data.Object properties
-func (store *ObjectMongoRepository) Update(ctx context.Context, ns data.Namespace, id data.ObjectID, size int64, status data.ObjectStatus) error {
+func (store *ObjectMongoRepository) Update(ctx context.Context, ns cmndata.Namespace, id data.ObjectID, size int64, status data.ObjectStatus) error {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
 		WithField("Namespace", ns).
@@ -135,7 +136,7 @@ func (store *ObjectMongoRepository) Update(ctx context.Context, ns data.Namespac
 }
 
 // Delete removes object in mongo database
-func (store *ObjectMongoRepository) Delete(ctx context.Context, ns data.Namespace, id data.ObjectID) error {
+func (store *ObjectMongoRepository) Delete(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) error {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
 		WithField("Namespace", ns).
@@ -155,7 +156,7 @@ func (store *ObjectMongoRepository) Delete(ctx context.Context, ns data.Namespac
 }
 
 // Exists checks if data.Object exists in mongo database
-func (store *ObjectMongoRepository) Exists(ctx context.Context, ns data.Namespace, id data.ObjectID) (bool, error) {
+func (store *ObjectMongoRepository) Exists(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) (bool, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
 		WithField("Namespace", ns).
@@ -169,7 +170,7 @@ func (store *ObjectMongoRepository) Exists(ctx context.Context, ns data.Namespac
 }
 
 // SetCompleted change data.Object status to data.Uploaded
-func (store *ObjectMongoRepository) SetCompleted(ctx context.Context, ns data.Namespace, id data.ObjectID) error {
+func (store *ObjectMongoRepository) SetCompleted(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) error {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
 		WithField("Namespace", ns).
@@ -207,7 +208,7 @@ func (store *ObjectMongoRepository) SetCompleted(ctx context.Context, ns data.Na
 }
 
 // IsUploaded checks if data.Object was data.Uploaded
-func (store *ObjectMongoRepository) IsUploaded(ctx context.Context, ns data.Namespace, id data.ObjectID) (bool, error) {
+func (store *ObjectMongoRepository) IsUploaded(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) (bool, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("ObjectID", id).
 		WithField("Namespace", ns).
@@ -261,7 +262,7 @@ func (store *ObjectMongoRepository) FindAllByStatus(ctx context.Context, status 
 }
 
 // Usage returns space used by data.Namespace
-func (store *ObjectMongoRepository) Usage(ctx context.Context, ns data.Namespace) (int64, error) {
+func (store *ObjectMongoRepository) Usage(ctx context.Context, ns cmndata.Namespace) (int64, error) {
 	log := store.log.WithContext(ctx)
 	log.WithField("Namespace", ns).
 		Debug("Usage stats")
@@ -306,7 +307,7 @@ func objectToDTO(obj data.Object) objectDTO {
 // objectDtoToModel converts objectDTO to data.Object
 func objectDtoToModel(dto objectDTO) data.Object {
 	model := data.Object{
-		Namespace: data.Namespace(dto.Namespace),
+		Namespace: cmndata.Namespace(dto.Namespace),
 		ID:        data.ObjectID(dto.ObjectID),
 		ByteSize:  dto.ByteSize,
 		Status:    data.ObjectStatus(dto.Status),
@@ -314,7 +315,7 @@ func objectDtoToModel(dto objectDTO) data.Object {
 	return model
 }
 
-func getOneObjectFilter(ns data.Namespace, id data.ObjectID) bson.D {
+func getOneObjectFilter(ns cmndata.Namespace, id data.ObjectID) bson.D {
 	return bson.D{primitive.E{
 		Key: "$and",
 		Value: bson.A{

@@ -3,7 +3,7 @@ package data
 import (
 	"fmt"
 
-	"github.com/shuvava/go-ota-svc-common/data"
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
 )
 
 // Commit is OTSTree commit object
@@ -11,7 +11,7 @@ type Commit string
 
 // CommitManifest is OSTree commit manifest
 type CommitManifest struct {
-	Namespace Namespace
+	Namespace cmndata.Namespace
 	Commit    ObjectID
 	Contents  string
 }
@@ -20,7 +20,7 @@ type CommitManifest struct {
 func (obj Commit) Validate() error {
 	err := fmt.Errorf("%s is not a sha-256 commit hash", obj)
 	sha := string(obj)
-	if !data.ValidHex(64, sha) {
+	if !cmndata.ValidHex(64, sha) {
 		return err
 	}
 
@@ -44,6 +44,6 @@ func NewCommit(str string) (Commit, error) {
 
 // NewCommitFromBytes validate content and create Commit object
 func NewCommitFromBytes(content []byte) (Commit, error) {
-	str := data.ByteDigest(content)
+	str := cmndata.ByteDigest(content)
 	return NewCommit(str)
 }

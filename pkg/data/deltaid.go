@@ -15,7 +15,7 @@ func (delta DeltaID) formattingError() error {
 	return fmt.Errorf("%s is not a valid DeltaID (cc/mbase64(from.rest)-mbase64(to)", delta)
 }
 
-//Validate if DeltaID has valid format
+// Validate if DeltaID has valid format
 func (delta DeltaID) Validate() error {
 	parts := strings.Split(string(delta), "-")
 	if len(parts) != 2 {

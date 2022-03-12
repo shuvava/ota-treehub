@@ -12,6 +12,7 @@ import (
 
 	"github.com/shuvava/go-logging/logger"
 	"github.com/shuvava/go-ota-svc-common/apperrors"
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
 	intdata "github.com/shuvava/go-ota-svc-common/data"
 	"github.com/sirupsen/logrus"
 
@@ -57,7 +58,7 @@ func TestObjectLocalFsStore(t *testing.T) {
 	}
 	store, e := NewLocalFsBlobStore(dir, log)
 	checkOnNil(e)
-	ns := data.Namespace("test")
+	ns := cmndata.Namespace("test")
 
 	t.Run("Exists func should return false if file not exists", func(t *testing.T) {
 		id := data.ObjectID("1")

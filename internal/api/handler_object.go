@@ -20,7 +20,7 @@ const (
 // ObjectExists handler check if object exists
 func ObjectExists(ctx echo.Context, svc *services.ObjectService) error {
 	c := cmnapi.GetRequestContext(ctx)
-	ns := GetNamespace(ctx)
+	ns := cmnapi.GetNamespace(ctx)
 	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, cmnapi.NewErrorResponse(c, http.StatusBadRequest, err))
@@ -38,7 +38,7 @@ func ObjectExists(ctx echo.Context, svc *services.ObjectService) error {
 // ObjectUploadCompleted handler updating object status
 func ObjectUploadCompleted(ctx echo.Context, svc *services.ObjectService) error {
 	c := cmnapi.GetRequestContext(ctx)
-	ns := GetNamespace(ctx)
+	ns := cmnapi.GetNamespace(ctx)
 	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, cmnapi.NewErrorResponse(c, http.StatusBadRequest, err))
@@ -53,7 +53,7 @@ func ObjectUploadCompleted(ctx echo.Context, svc *services.ObjectService) error 
 // ObjectUpload is endpoint uploading data.Object file to server from client
 func ObjectUpload(ctx echo.Context, svc *services.ObjectService) error {
 	c := cmnapi.GetRequestContext(ctx)
-	ns := GetNamespace(ctx)
+	ns := cmnapi.GetNamespace(ctx)
 	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, cmnapi.NewErrorResponse(c, http.StatusBadRequest, err))
@@ -77,7 +77,7 @@ func ObjectUpload(ctx echo.Context, svc *services.ObjectService) error {
 // ObjectDownload is endpoint download data.Object file from server to client
 func ObjectDownload(ctx echo.Context, svc *services.ObjectService) error {
 	c := cmnapi.GetRequestContext(ctx)
-	ns := GetNamespace(ctx)
+	ns := cmnapi.GetNamespace(ctx)
 	id, err := GetObjectID(ctx)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, cmnapi.NewErrorResponse(c, http.StatusBadRequest, err))

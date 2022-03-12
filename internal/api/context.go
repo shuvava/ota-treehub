@@ -11,24 +11,11 @@ import (
 )
 
 const (
-	// DefaultNamespaceValue is default treeHup namespace
-	DefaultNamespaceValue = "default"
-
-	headerNamespace = "x-ats-namespace"
 	headerForcePush = "x-ats-ostree-force"
 
 	pathOPrefix = "oprefix"
 	pathOSuffix = "osuffix"
 )
-
-// GetNamespace returns TreeHub namespace from header
-func GetNamespace(ctx echo.Context) data.Namespace {
-	ns := ctx.Request().Header.Get(headerNamespace)
-	if ns == "" {
-		ns = DefaultNamespaceValue
-	}
-	return data.NewNamespace(ns)
-}
 
 // GetObjectID builds data.ObjectID from request path
 func GetObjectID(ctx echo.Context) (data.ObjectID, error) {

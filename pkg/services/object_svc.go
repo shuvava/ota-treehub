@@ -5,6 +5,7 @@ import (
 	"io"
 
 	"github.com/shuvava/go-logging/logger"
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
 
 	objstore "github.com/shuvava/treehub/internal/blobs"
 	"github.com/shuvava/treehub/internal/db"
@@ -29,12 +30,12 @@ func NewObjectService(l logger.Logger, db db.ObjectRepository, fs objstore.Objec
 }
 
 // SetCompleted change data.Object status to data.Uploaded
-func (svc *ObjectService) SetCompleted(ctx context.Context, ns data.Namespace, id data.ObjectID) error {
+func (svc *ObjectService) SetCompleted(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) error {
 	return svc.db.SetCompleted(ctx, ns, id)
 }
 
 // Exists checks if data.Object exist on storage
-func (svc *ObjectService) Exists(ctx context.Context, ns data.Namespace, id data.ObjectID) (bool, error) {
+func (svc *ObjectService) Exists(ctx context.Context, ns cmndata.Namespace, id data.ObjectID) (bool, error) {
 	fsExists, err := svc.fs.Exists(ctx, ns, id)
 	if err != nil {
 		return false, err
@@ -47,7 +48,7 @@ func (svc *ObjectService) Exists(ctx context.Context, ns data.Namespace, id data
 }
 
 // StoreStream save data.Object
-func (svc *ObjectService) StoreStream(ctx context.Context, ns data.Namespace, id data.ObjectID, size int64, reader io.Reader) error {
+func (svc *ObjectService) StoreStream(ctx context.Context, ns cmndata.Namespace, id data.ObjectID, size int64, reader io.Reader) error {
 	log := svc.log.WithContext(ctx)
 	obj := data.Object{
 		Namespace: ns,
@@ -82,6 +83,6 @@ func (svc *ObjectService) StoreStream(ctx context.Context, ns data.Namespace, id
 }
 
 // ReadFull read data.Object
-func (svc *ObjectService) ReadFull(ctx context.Context, ns data.Namespace, id data.ObjectID, writer io.Writer) error {
+func (svc *ObjectService) ReadFull(ctx context.Context, ns cmndata.Namespace, id data.ObjectID, writer io.Writer) error {
 	return svc.fs.ReadFull(ctx, ns, id, writer)
 }

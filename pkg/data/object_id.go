@@ -16,7 +16,7 @@ type ObjectID string
 // ErrorDataSerializationObjectID is error of data.ObjectID serialization
 const ErrorDataSerializationObjectID = apperrors.ErrorDataSerialization + ":ObjectID"
 
-//Validate if ObjectId has valid format
+// Validate if ObjectId has valid format
 func (objectId ObjectID) Validate() error {
 	err := apperrors.NewAppError(
 		ErrorDataSerializationObjectID,
@@ -27,7 +27,7 @@ func (objectId ObjectID) Validate() error {
 	}
 	sha := parts[0]
 	objectType := parts[1]
-	if !data.ValidHex(64, sha) || len(objectType) == 0 {
+	if len(objectType) == 0 || !data.ValidHex(64, sha) {
 		return err
 	}
 

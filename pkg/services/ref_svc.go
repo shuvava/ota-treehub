@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/shuvava/go-logging/logger"
+	cmndata "github.com/shuvava/go-ota-svc-common/data"
 
 	"github.com/shuvava/go-ota-svc-common/apperrors"
 	"github.com/shuvava/treehub/internal/db"
@@ -30,7 +31,7 @@ func NewRefService(l logger.Logger, db db.RefRepository) *RefService {
 }
 
 // StoreRef persists data.Ref to database
-func (svc *RefService) StoreRef(ctx context.Context, ns data.Namespace, name data.RefName, commit data.Commit, force bool) error {
+func (svc *RefService) StoreRef(ctx context.Context, ns cmndata.Namespace, name data.RefName, commit data.Commit, force bool) error {
 	log := svc.log.WithContext(ctx)
 	ref, err := data.NewRef(ns, name, commit)
 	if err != nil {
@@ -58,11 +59,11 @@ func (svc *RefService) StoreRef(ctx context.Context, ns data.Namespace, name dat
 }
 
 // GetRef returns data.Ref from database
-func (svc *RefService) GetRef(ctx context.Context, ns data.Namespace, name data.RefName) (*data.Ref, error) {
+func (svc *RefService) GetRef(ctx context.Context, ns cmndata.Namespace, name data.RefName) (*data.Ref, error) {
 	return svc.db.Find(ctx, ns, name)
 }
 
 // Exists checks if data.Ref exist on storage
-func (svc *RefService) Exists(ctx context.Context, ns data.Namespace, name data.RefName) (bool, error) {
+func (svc *RefService) Exists(ctx context.Context, ns cmndata.Namespace, name data.RefName) (bool, error) {
 	return svc.db.Exists(ctx, ns, name)
 }
