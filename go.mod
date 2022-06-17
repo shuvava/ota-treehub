@@ -6,8 +6,8 @@ require (
 	github.com/fsnotify/fsnotify v1.5.1
 	github.com/labstack/echo-contrib v0.11.0
 	github.com/labstack/echo/v4 v4.6.3
-	github.com/shuvava/go-logging v1.0.5
-	github.com/shuvava/go-ota-svc-common v1.0.15
+	github.com/shuvava/go-logging v1.0.6
+	github.com/shuvava/go-ota-svc-common v1.0.17
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/viper v1.9.0
 	go.mongodb.org/mongo-driver v1.7.4
