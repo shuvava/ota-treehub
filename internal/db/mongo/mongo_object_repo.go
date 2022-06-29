@@ -281,15 +281,17 @@ func (store *ObjectMongoRepository) Usage(ctx context.Context, ns cmndata.Namesp
 	}
 	pipeline = append(pipeline, matchStage, groupStage)
 
-	res, err := store.db.Aggregate(ctx, store.coll, pipeline)
-	if err != nil {
+	var res []*struct {
+		total int64
+	}
+	if err := store.db.Aggregate(ctx, store.coll, pipeline, nil, &res); err != nil {
 		return 0, err
 	}
 	if len(res) < 1 {
 		return 0, fmt.Errorf("unexpected result")
 	}
 
-	return res[0]["total"].(int64), nil
+	return res[0].total, nil
 }
 
 // objectToDTO converts data.Object to objectDTO
