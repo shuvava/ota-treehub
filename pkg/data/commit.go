@@ -16,7 +16,7 @@ type CommitManifest struct {
 	Contents  string
 }
 
-//Validate if Commit has valid format
+// Validate validates if Commit has valid format
 func (obj Commit) Validate() error {
 	err := fmt.Errorf("%s is not a sha-256 commit hash", obj)
 	sha := string(obj)

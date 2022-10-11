@@ -2,7 +2,6 @@ package localfs
 
 import (
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -22,7 +21,7 @@ func copyContentAndClose(file *os.File, reader io.Reader) (int64, error) {
 func safeStoreStream(path string, reader io.Reader) (size int64, err error) {
 	parent := filepath.Dir(path)
 	fname := filepath.Base(path)
-	file, err := ioutil.TempFile(parent, fname)
+	file, err := os.CreateTemp(parent, fname)
 	if err != nil {
 		return 0, err
 	}

@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
@@ -48,8 +47,7 @@ func TestObjectLocalFsStore(t *testing.T) {
 	}
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	dir, e := ioutil.TempDir("", "treehub_object")
-	checkOnNil(e)
+	dir := os.TempDir()
 	var log logger.Logger
 	if useNopLogger {
 		log = logger.NewNopLogger()
