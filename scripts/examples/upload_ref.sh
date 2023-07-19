@@ -8,8 +8,9 @@ print() {
 }
 
 TREEHUB_SVC="localhost:8080"
+BRANCH="master"
 file="ref_master.txt"
-URL="http://${TREEHUB_SVC}/api/v3/refs/heads/master"
+URL="http://${TREEHUB_SVC}/api/v3/refs/heads/${BRANCH}"
 print "url ${URL}"
 
 curl -X "POST" \

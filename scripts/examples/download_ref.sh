@@ -10,11 +10,12 @@ print() {
 }
 
 TREEHUB_SVC="localhost:8080"
+BRANCH="master"
 file="ref_master.txt"
 temp_file=$(mktemp)
 SHA256=$(cat "$file")
 print "file sha256 $SHA256"
-URL="http://${TREEHUB_SVC}/api/v3/refs/heads/master"
+URL="http://${TREEHUB_SVC}/api/v3/refs/heads/${BRANCH}"
 print "url ${URL}"
 
 curl -H "x-ats-namespace:default" "${URL}" > "$temp_file"
